@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\RoleType;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
@@ -13,12 +14,7 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        $roles = [
-            'Super Admin',
-            'Admin',
-            'Manager',
-            'Employees',
-        ];
+        $roles = RoleType::getAllProperties();
 
         foreach($roles as $role) {
             Role::firstOrCreate(['name' => $role, 'guard_name' => 'web']);
