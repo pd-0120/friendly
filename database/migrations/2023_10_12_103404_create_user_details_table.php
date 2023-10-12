@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('emergency_phone', 20)->nullable();
             $table->string('street', 50)->nullable();
             $table->string('suburb', 50)->nullable();
-            $table->integer('pincode', 6)->nullable();
+            $table->integer('pincode')->nullable();
             $table->double('payrate', 10, 2)->default(0.00);
             $table->date('joining_date')->nullable();
             $table->date('leaving_date')->nullable();

@@ -3,13 +3,13 @@
         <div class="row">
             <div class="col-md-4 form-group">
                 <label for="">Name</label>
-                <input type="text" wire:model='state.name' class="form-control">
-                <x-error-component :name="'state.name'"/>
+                <input type="text" wire:model='name' class="form-control">
+                <x-error-component :name="'name'"/>
             </div>
             <div class="col-md-4 form-group">
                 <label for="">Email</label>
-                <input type="email" wire:model='state.email' class="form-control">
-                <x-error-component :name="'state.email'" />
+                <input type="email" wire:model='email' class="form-control">
+                <x-error-component :name="'email'" />
             </div>
             <div class="col-md-4 form-group">
                 <label for="">Phone</label>
