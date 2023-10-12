@@ -21,6 +21,7 @@ class UserDetails extends Model
         'joining_date',
         'leaving_date',
         'dob',
+        'status'
     ];
 
     public function User() {

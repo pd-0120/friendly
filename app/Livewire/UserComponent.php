@@ -2,6 +2,9 @@
 
 namespace App\Livewire;
 
+use App\Models\User;
+use App\Models\UserDetails;
+use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
 
 class UserComponent extends Component
@@ -10,21 +13,21 @@ class UserComponent extends Component
     public $name = "";
     public $email = "";
     public $detail_state = [
-        'active' => true
+        'status' => true
     ];
     public $rules = [
         'name' => 'required',
         'email' => 'required|unique:users',
-        'detail_state.phone' => 'required|max:50',
+        'detail_state.phone' => 'required|max:20',
         'detail_state.dob' => 'nullable|date',
-        'detail_state.emergency_phone' => 'nullable|max:50',
+        'detail_state.emergency_phone' => 'nullable|max:20',
         'detail_state.street' => 'nullable|max:50',
         'detail_state.suburb' => 'nullable|max:50',
-        'detail_state.pincode' => 'nullable|digit|max:50',
-        'detail_state.payrate' => 'nullable|digit|max:50',
+        'detail_state.pincode' => 'nullable|digits:4',
+        'detail_state.payrate' => 'nullable|digits_between:1,50',
         'detail_state.joining_date' => 'nullable|date',
         'detail_state.leaving_date' => 'nullable|date',
-        'detail_state.status' => 'rquired|boolean',
+        'detail_state.status' => 'boolean',
     ];
 
     public $validationAttributes = [
@@ -47,6 +50,14 @@ class UserComponent extends Component
 
     public function save() {
         $this->validate();
-        dd($this);
+
+        $user = new User();
+        $user->name = $this->name;
+        $user->email = $this->email;
+        $user->password = Hash::make(str()->random(8));
+        $user->save();
+        $userDetails = new UserDetails($this->detail_state);
+
+        $user->UserDetail()->save($userDetails);
     }
 }

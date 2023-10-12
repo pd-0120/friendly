@@ -57,9 +57,9 @@
                 <x-error-component :name="'detail_state.leaving_date'" />
             </div>
             <div class="col-md-4 form-group mt-4">
-                <label for="">Is Active</label>
-                <input type="checkbox" checked wire:model='detail_state.active'>
-                <x-error-component :name="'detail_state.active'" />
+                <label for="">Status</label>
+                <input type="checkbox" checked wire:model='detail_state.status'>
+                <x-error-component :name="'detail_state.status'" />
             </div>
         </div>
 

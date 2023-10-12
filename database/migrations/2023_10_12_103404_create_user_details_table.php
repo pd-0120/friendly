@@ -23,6 +23,9 @@ return new class extends Migration
             $table->date('joining_date')->nullable();
             $table->date('leaving_date')->nullable();
             $table->date('dob')->nullable();
+            $table->boolean('status')->default(1);
+            $table->timestamps();
+
         });
     }
 
