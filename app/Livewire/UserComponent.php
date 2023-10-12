@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Models\User;
 use App\Models\UserDetails;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 
 class UserComponent extends Component
@@ -59,5 +60,10 @@ class UserComponent extends Component
         $userDetails = new UserDetails($this->detail_state);
 
         $user->UserDetail()->save($userDetails);
+
+        Session::flash('message.level', 'success');
+        Session::flash('message.content', 'User added successfully.');
+
+        return redirect()->route('user.index');
     }
 }

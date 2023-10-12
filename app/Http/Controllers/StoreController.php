@@ -13,7 +13,7 @@ class StoreController extends Controller
      */
     public function index()
     {
-        //
+        return view('stores.index');
     }
 
     /**
@@ -21,46 +21,14 @@ class StoreController extends Controller
      */
     public function create()
     {
-        //
+        return view('stores.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreStoreRequest $request)
+    public function edit()
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Store $store)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Store $store)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateStoreRequest $request, Store $store)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Store $store)
-    {
-        //
+        return view('stores.edit');
     }
 }

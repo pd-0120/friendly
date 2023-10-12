@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\StoreController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -34,7 +35,12 @@ Route::middleware('auth')->group(function () {
         Route::get('/',[UserController::class, 'index'])->name('index');
         Route::get('create',[UserController::class, 'create'])->name('create');
         Route::get('edit/{id}', [UserController::class, 'edit'])->name('edit');
+    });
 
+    Route::prefix('stores')->name('store.')->group(function () {
+        Route::get('/', [StoreController::class, 'index'])->name('index');
+        Route::get('create', [StoreController::class, 'create'])->name('create');
+        Route::get('edit/{id}', [StoreController::class, 'edit'])->name('edit');
     });
 });
 

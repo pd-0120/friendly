@@ -26,6 +26,8 @@
     <link rel="stylesheet" href="{{ asset('plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
     <!-- Daterange picker -->
     <link rel="stylesheet" href="{{ asset('plugins/daterangepicker/daterangepicker.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/toastr/toastr.min.css') }}">
+
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -82,9 +84,21 @@
     <script src="{{ asset('plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js' ) }}"></script>
     <!-- AdminLTE App -->
     <script src="{{ asset('dist/js/adminlte.js') }}"></script>
-    <script src="{{ asset('dist/js/custom.js') }}">
-
+    <script src="{{ asset('plugins/toastr/toastr.min.js') }}"></script>
+    <script src="{{ asset('dist/js/custom.js') }}"></script>
+    <script>
+    @if(session()->has('message'))
+        @if(session()->get('message.level') == "success")
+        toastr.success("{{ session()->get('message.content') }}")
+        @elseif (session()->get('message.level') == "error")
+        toastr.error("{{ session()->get('message.content') }}")
+        @elseif (session()->get('message.level') == "info")
+        toastr.info("{{ session()->get('message.content') }}")
+        @endif
+    @endif
     </script>
+    @stack('js')
+
 </body>
 
 </html>
