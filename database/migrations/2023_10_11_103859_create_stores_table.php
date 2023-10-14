@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('stores', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('name');
+            $table->json('allowed_ips')->nullable();
             $table->string('phone', 20)->nullable();
             $table->string('emergency_phone', 20)->nullable();
             $table->string('street', 50)->nullable();
