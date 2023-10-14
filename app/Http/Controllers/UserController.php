@@ -16,6 +16,9 @@ class UserController extends Controller
             ->editColumn('action', function($data)  {
                 return $data->name;
             })
+            ->editColumn('action', function($data) {
+                return view('formActions.user-actions', compact('data'))->render();
+            })
             ->make(true);
         }
         return view('users.index');
@@ -26,8 +29,8 @@ class UserController extends Controller
         return view('users.create');
     }
 
-    public function edit()
+    public function edit(User $user)
     {
-        return view('users.edit');
+        return view('users.edit', compact('user'));
     }
 }

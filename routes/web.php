@@ -34,13 +34,15 @@ Route::middleware('auth')->group(function () {
     Route::prefix('users')->name('user.')->group(function () {
         Route::get('/',[UserController::class, 'index'])->name('index');
         Route::get('create',[UserController::class, 'create'])->name('create');
-        Route::get('edit/{id}', [UserController::class, 'edit'])->name('edit');
+        Route::get('{user}/edit', [UserController::class, 'edit'])->name('edit');
     });
+
+    Route::resource('test', StoreController::class);
 
     Route::prefix('stores')->name('store.')->group(function () {
         Route::get('/', [StoreController::class, 'index'])->name('index');
         Route::get('create', [StoreController::class, 'create'])->name('create');
-        Route::get('edit/{id}', [StoreController::class, 'edit'])->name('edit');
+        Route::get('{user}/edit', [StoreController::class, 'edit'])->name('edit');
     });
 });
 
