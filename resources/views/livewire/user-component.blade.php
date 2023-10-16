@@ -47,6 +47,18 @@
                 <x-error-component :name="'detail_state.payrate'" />
             </div>
             <div class="col-md-4 form-group">
+                <label for="">Role</label>
+                <select class="form-control" wire:model='role'>
+                <option value="">Select</option>
+                    @forelse ($roles as $role)
+                    <option value="{{ $role }}">{{ $role }}</option>
+                    @empty
+
+                    @endforelse
+                </select>
+                <x-error-component :name="'detail_state.payrate'" />
+            </div>
+            <div class="col-md-4 form-group">
                 <label for="">Joining Date</label>
                 <input type="date" wire:model='detail_state.joining_date' class="form-control">
                 <x-error-component :name="'detail_state.joining_date'" />

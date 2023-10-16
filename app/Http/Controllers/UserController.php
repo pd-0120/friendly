@@ -38,11 +38,11 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
+        $user->delete();
         try {
 
-            DB::transaction(function($user) {
+            DB::transaction(function() use($user) {
                 $user->UserDetail ?? $user->UserDetail->delete();
-                $user->delete();
             });
 
             sleep(1);

@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Enums\RoleType;
 use App\Models\User;
 use App\Models\UserDetails;
 use Illuminate\Support\Facades\Hash;
@@ -13,6 +14,8 @@ class UserComponent extends Component
 
     public $name = "";
     public $email = "";
+    public $role = "";
+    public $roles = [];
 
     public User $user;
     public UserDetails $userDetails;
@@ -50,9 +53,12 @@ class UserComponent extends Component
 
     public function mount()
     {
+        $this->roles = RoleType::getAllProperties();
+
         if(isset($this->user)) {
             $user = $this->user;
 
+            $this->role = $user->getRoleNames()->first();
             $this->rules['email'] = "required|unique:users,email,$user->id";
             $this->name = $user->name;
             $this->email = $user->email;
