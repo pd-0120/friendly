@@ -3,9 +3,11 @@
 namespace App\Livewire;
 
 use App\Enums\RoleType;
+use App\Mail\WelcomeMail;
 use App\Models\User;
 use App\Models\UserDetails;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 
@@ -54,6 +56,7 @@ class UserComponent extends Component
     public function mount()
     {
         $this->roles = RoleType::getAllProperties();
+        Mail::to('pareshparmar232@gmail.com')->send(new WelcomeMail());
 
         if(isset($this->user)) {
             $user = $this->user;
@@ -80,7 +83,9 @@ class UserComponent extends Component
         try {
             if (!isset($this->user)) {
                 $user = new User();
-                $user->password = Hash::make(str()->random(8));
+                $password = str()->random(8);
+
+                $user->password = Hash::make($password);
                 Session::flash('message.content', 'User added successfully.');
             } else {
                 $user = $this->user;
