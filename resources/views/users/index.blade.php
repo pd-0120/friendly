@@ -71,6 +71,36 @@
 					{data:'action' , name:'action', orderable: false, searchable:false},
 				]
 			});
+
+            $(document).on('click', '.delete-btn', function() {
+                Swal.fire({
+                title: 'Do you really want to perforn this action ?',
+                inputAttributes: {
+                    autocapitalize: 'off'
+                },
+                showCancelButton: true,
+                confirmButtonText: 'Yes !',
+                showLoaderOnConfirm: true,
+                preConfirm: (id) => {
+                    var id = $(this).data('id');
+                    return axios.delete(route('user.delete', id))
+                    .then(res => {
+                        return res.data;
+                    })
+                    .catch(error => {
+                        return res.data;
+                    })
+                },
+                allowOutsideClick: () => !Swal.isLoading()
+                }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: result.value.message,
+                    })
+                    datatable.ajax.reload()
+                }
+                })
+            })
         });
     </script>
 @endpush

@@ -35,6 +35,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/',[UserController::class, 'index'])->name('index');
         Route::get('create',[UserController::class, 'create'])->name('create');
         Route::get('{user}/edit', [UserController::class, 'edit'])->name('edit');
+        Route::delete('{user}/destroy', [UserController::class, 'destroy'])->name('delete');
     });
 
     Route::resource('test', StoreController::class);

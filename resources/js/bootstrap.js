@@ -5,7 +5,10 @@
  */
 
 import axios from 'axios';
+import IMask from "imask";
+
 window.axios = axios;
+window.IMask = IMask;
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 

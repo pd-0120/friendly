@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AdminLTE 3 | Dashboard</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}" id="csrf-token">
+
+    <title>{{ config('app.name', 'PDs Site') }}</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
@@ -29,7 +31,7 @@
     <link rel="stylesheet" href="{{ asset('plugins/toastr/toastr.min.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
-
+    <link rel="stylesheet" href="{{ asset('plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
     @routes
 </head>
 
@@ -80,9 +82,9 @@
     <script src="{{ asset('plugins/jquery-knob/jquery.knob.min.js' ) }}></script>
     <!-- daterangepicker -->
     <script src=" {{ asset('plugins/moment/moment.min.js' ) }}></script>
-    <script src="{{ asset('plugins/daterangepicker/daterangepicker.js' ) }}></script>
+    <script src="{{ asset('plugins/daterangepicker/daterangepicker.js' ) }}"></script>
     <!-- Tempusdominus Bootstrap 4 -->
-    <script src=" {{ asset('plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js' ) }}></script>
+    <script src="{{ asset('plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js' ) }}></script>
     <!-- overlayScrollbars -->
     <script src="{{ asset('plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js' ) }}"></script>
     <!-- AdminLTE App -->
@@ -93,6 +95,8 @@
     <script src="{{ asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
     <script src="{{ asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+
     <script>
     @if(session()->has('message'))
         @if(session()->get('message.level') == "success")
@@ -104,6 +108,7 @@
         @endif
     @endif
     </script>
+    @vite(['resources/js/app.js'])
     @stack('js')
 
 </body>

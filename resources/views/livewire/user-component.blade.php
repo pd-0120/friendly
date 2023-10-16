@@ -13,7 +13,7 @@
             </div>
             <div class="col-md-4 form-group">
                 <label for="">Phone</label>
-                <input type="text" wire:model='detail_state.phone' class="form-control">
+                <input type="text" wire:model='detail_state.phone' class="form-control" id="phone_number">
                 <x-error-component :name="'detail_state.phone'" />
             </div>
             <div class="col-md-4 form-group">
@@ -23,7 +23,7 @@
             </div>
             <div class="col-md-4 form-group">
                 <label for="">Emergency Phone</label>
-                <input type="text" wire:model='detail_state.emergency_phone' class="form-control">
+                <input type="text" wire:model='detail_state.emergency_phone' class="form-control" id="emergency_phone">
                 <x-error-component :name="'detail_state.emergency_phone'" />
             </div>
             <div class="col-md-4 form-group">
@@ -70,3 +70,19 @@
         </div>
     </form>
 </div>
+
+@push('js')
+<script>
+    $(function() {
+        const element = document.getElementById('phone_number');
+        const maskOptions = {
+            mask: '{\\0}0000 000 000'
+        };
+        const mask = window.IMask(element, maskOptions);
+
+        const element1 = document.getElementById('emergency_phone');
+
+        const mask1 = window.IMask(element1, maskOptions);
+    })
+</script>
+@endpush
