@@ -1,10 +1,9 @@
 <x-mail::message>
-# Introduction
-
-The body of your message.
-
-<x-mail::button :url="''">
-Button Text
+Hi {{ $user->name }},
+Your account has been created with {{ config('app.name') }}.
+Your login email is {{ $user->email }}, and password is {{ $password }}
+<x-mail::button :url="{{ config('app.url') }}">
+Login Here
 </x-mail::button>
 
 Thanks,<br>

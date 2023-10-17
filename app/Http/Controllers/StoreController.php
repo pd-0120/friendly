@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreStoreRequest;
 use App\Http\Requests\UpdateStoreRequest;
 use App\Models\Store;
+use Illuminate\Support\Facades\Session;
 
 class StoreController extends Controller
 {
@@ -27,8 +28,21 @@ class StoreController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function edit()
+    public function edit(Store $store)
     {
-        return view('stores.edit');
+        return view('stores.edit', compact('store'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function destroy(Store $store)
+    {
+        $store->delete();
+
+        Session::flash('message.level', 'success');
+        Session::flash('message.content', 'Store has been removed successfully.');
+
+        return redirect()->route('store.index');
     }
 }

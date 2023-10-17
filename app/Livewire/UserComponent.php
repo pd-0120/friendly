@@ -56,7 +56,6 @@ class UserComponent extends Component
     public function mount()
     {
         $this->roles = RoleType::getAllProperties();
-        Mail::to('pareshparmar232@gmail.com')->send(new WelcomeMail());
 
         if(isset($this->user)) {
             $user = $this->user;
@@ -103,6 +102,11 @@ class UserComponent extends Component
                 $userDetails = $this->userDetails->update($this->detail_state);
             }
 
+            // Send the welcome email with the password.
+            if($user->wasRecentlyCreated) {
+                $this->sendWelcomeEmail($user, $password);
+            }
+
             Session::flash('message.level', 'success');
 
 
@@ -112,5 +116,14 @@ class UserComponent extends Component
         }
 
         return redirect()->route('user.index');
+    }
+
+    private function sendWelcomeEmail(User $user, $password) {
+        try {
+            //code...
+            Mail::to($user->email)->send(new WelcomeMail($user, $password));
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
     }
 }
