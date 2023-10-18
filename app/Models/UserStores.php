@@ -9,4 +9,9 @@ use Illuminate\Database\Eloquent\Model;
 class UserStores extends Model
 {
     use HasFactory, HasUuids;
+
+    public $fillable = [
+        'user_id',
+        'store_id',
+    ];
 }

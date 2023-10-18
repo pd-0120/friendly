@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Store;
+use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 
 class StoreComponent extends Component
@@ -12,27 +13,45 @@ class StoreComponent extends Component
     public Store $store;
 
     public $rules = [
-        'name' => 'required|max:',
-        'allowed_ips' => 'nullable',
-        'phone' => 'nullable|max:20',
-        'emergency_phone' => 'nullable|max:20',
-        'street' => 'nullable|max:50',
-        'suburb' => 'nullable|max:50',
-        'pincode' => "nullable|max:50"
+        'state.name' => 'required|max:20',
+        'state.phone' => 'required|max:20',
+        'state.emergency_phone' => 'required|max:20',
+        'state.street' => 'required|max:50',
+        'state.suburb' => 'required|max:50',
+        'state.pincode' => "required|digits:4"
     ];
 
     public $validationAttributes = [
-        'store.name' => "Name",
-        'store.allowed_ips' => "Allowed IPs",
-        'store.phone' => "",
-        'store.emergency_phone' => "Emergency Phone",
-        'store.street' => "Streey",
-        'store.suburb' => "SubUrb",
-        'store.pincode' => "Pincode",
+        'state.name' => "Name",
+        'state.allowed_ips' => "Allowed IPs",
+        'state.phone' => "Phone",
+        'state.emergency_phone' => "Emergency Phone",
+        'state.street' => "Streat",
+        'state.suburb' => "SubUrb",
+        'state.pincode' => "Pincode",
     ];
 
     public function render()
     {
         return view('livewire.store-component');
+    }
+
+    public function saveData() {
+        $this->validate();
+
+        if(!isset($this->store)) {
+            $store = new Store($this->state);
+            Session::flash('message.content', 'Store added successfully.');
+
+        } else {
+            $store = $this->store;
+            Session::flash('message.content', 'Store updated successfully.');
+        }
+        $store->allowed_ips = json_encode(explode(',', $this->state['allowed_ips']));
+        $store->save();
+
+        Session::flash('message.level', 'success');
+
+        return redirect()->route('store.index');
     }
 }

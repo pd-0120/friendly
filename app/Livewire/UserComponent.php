@@ -4,8 +4,10 @@ namespace App\Livewire;
 
 use App\Enums\RoleType;
 use App\Mail\WelcomeMail;
+use App\Models\Store;
 use App\Models\User;
 use App\Models\UserDetails;
+use App\Models\UserStores;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
@@ -19,6 +21,10 @@ class UserComponent extends Component
     public $role = "";
     public $roles = [];
 
+    public $stores = [];
+    public $store = [];
+
+    public $userStores;
     public User $user;
     public UserDetails $userDetails;
 
@@ -38,6 +44,7 @@ class UserComponent extends Component
         'detail_state.joining_date' => 'nullable|date_format:Y-m-d',
         'detail_state.leaving_date' => 'nullable|date_format:Y-m-d',
         'detail_state.status' => 'boolean',
+        'role' => 'required',
     ];
 
     public $validationAttributes = [
@@ -64,11 +71,17 @@ class UserComponent extends Component
             $this->rules['email'] = "required|unique:users,email,$user->id";
             $this->name = $user->name;
             $this->email = $user->email;
+            $this->userStores = $user->Stores;
+            if(count($this->userStores) > 0) {
+                $this->store = $this->userStores->pluck('id')->toArray();
+            }
         }
 
         if (isset($this->userDetails)) {
             $this->detail_state = $this->userDetails->toArray();
         }
+
+        $this->stores = Store::select('id', 'name')->get();
     }
 
     public function render()
@@ -76,7 +89,7 @@ class UserComponent extends Component
         return view('livewire.user-component');
     }
 
-    public function save() {
+    public function saveData() {
 
         $this->validate();
         try {
@@ -94,13 +107,10 @@ class UserComponent extends Component
             $user->email = $this->email;
             $user->save();
 
-            if (!isset($this->userDetails)) {
-                $userDetails = new UserDetails($this->detail_state);
+            $user->syncRoles([$this->role]);
 
-                $user->UserDetail()->save($userDetails);
-            } else {
-                $userDetails = $this->userDetails->update($this->detail_state);
-            }
+            $this->syncStore($user);
+            $this->updateUserDetail($user);
 
             // Send the welcome email with the password.
             if($user->wasRecentlyCreated) {
@@ -118,12 +128,40 @@ class UserComponent extends Component
         return redirect()->route('user.index');
     }
 
+
+    private function updateUserDetail(User $user)
+    {
+        if (!isset($this->userDetails)) {
+            $userDetails = new UserDetails($this->detail_state);
+
+            $user->UserDetail()->save($userDetails);
+        } else {
+            $userDetails = $this->userDetails->update($this->detail_state);
+        }
+    }
+
     private function sendWelcomeEmail(User $user, $password) {
         try {
             //code...
             Mail::to($user->email)->send(new WelcomeMail($user, $password));
         } catch (\Throwable $th) {
             //throw $th;
+        }
+    }
+
+    private function syncStore($user) {
+        $stores = $this->userStores->pluck('id');
+        $selectedStores = collect($this->store);
+
+        $oldStores = ($stores)->diff($selectedStores)->all();
+        $newStores = $selectedStores->diff(collect($stores))->all();
+
+        if(count($oldStores) > 0) {
+            UserStores::whereIn('store_id', $oldStores)->where('user_id', $user->id)->delete();
+        }
+
+        foreach($newStores as $store) {
+            UserStores::create(['user_id' => $user->id, 'store_id' => $store]);
         }
     }
 }

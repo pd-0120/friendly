@@ -1,5 +1,5 @@
 <div>
-    <form wire:submit="save">
+    <form wire:submit="saveData">
         <div class="row">
             <div class="col-md-4 form-group">
                 <label for="">Name</label>
@@ -53,7 +53,17 @@
                     @forelse ($roles as $role)
                     <option value="{{ $role }}">{{ $role }}</option>
                     @empty
-
+                    @endforelse
+                </select>
+                <x-error-component :name="'detail_state.payrate'" />
+            </div>
+            <div class="col-md-4 form-group">
+                <label for="">Stores</label>
+                <select class="form-control" wire:model='store' multiple>
+                    <option value="">Select</option>
+                    @forelse ($stores as $store)
+                    <option value="{{ $store->id }}">{{ $store->name }}</option>
+                    @empty
                     @endforelse
                 </select>
                 <x-error-component :name="'detail_state.payrate'" />

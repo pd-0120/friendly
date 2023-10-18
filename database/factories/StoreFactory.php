@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use Faker\Provider\en_AU\Address;
+use Faker\Provider\en_AU\PhoneNumber;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +19,12 @@ class StoreFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => fake()->userName(),
+            'phone' => PhoneNumber::mobileNumber(),
+            'emergency_phone' => PhoneNumber::mobileNumber(),
+            'street' => Address::streetSuffix(),
+            'suburb' => Address::state(),
+            'pincode' => Address::postcode(),
         ];
     }
 }
