@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -14,9 +14,6 @@ class UserController extends Controller
             $users = User::query()->with('UserDetail');
 
             return DataTables::of($users)
-            ->editColumn('action', function($data)  {
-                return $data->name;
-            })
             ->editColumn('action', function($data) {
                 return view('formActions.user-actions', compact('data'))->render();
             })

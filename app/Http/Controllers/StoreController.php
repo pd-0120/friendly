@@ -2,18 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreStoreRequest;
-use App\Http\Requests\UpdateStoreRequest;
 use App\Models\Store;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class StoreController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        if($request->ajax()) {
+            $stores = Store::query();
+
+            return DataTables::of($stores)
+            ->editColumn('address', function($data) {
+                return "$data->street, $data->suburb, $data->pincode";
+            })
+            ->editColumn('action', function($data) {
+                return view('formActions.store-actions', compact('data'))->render();
+            })
+            ->make(true);
+        }
         return view('stores.index');
     }
 

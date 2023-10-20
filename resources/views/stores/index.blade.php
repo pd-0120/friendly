@@ -32,12 +32,12 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <table class="table" id="user-table" width="100%">
+                        <table class="table" id="store-table" width="100%">
                             <thead>
                                 <tr>
                                     <td>Name</td>
                                     <td>Phone</td>
-                                    <td>Stores</td>
+                                    <td>Address</td>
                                     <td>Actions</td>
                                 </tr>
                             </thead>
@@ -55,7 +55,7 @@
 @push('js')
 <script>
     $(function () {
-            const datatable = $('#user-table').DataTable({
+            const datatable = $('#store-table').DataTable({
 				processing:true,
 				pageLength: 20,
 				lengthMenu: [
@@ -63,11 +63,11 @@
 				],
 				serverSide: true,
 				scrollX: true,
-				ajax: route('user.index'),
+				ajax: route('store.index'),
 				columns:[
 					{data:'name' , name:'name'},
-					{data:'user_detail.phone' , name:'name'},
-					{data:'email' , name:'email'},
+					{data:'phone' , name:'phone'},
+					{data:'address' , name:'address', orderable: false, searchable:false},
 					{data:'action' , name:'action', orderable: false, searchable:false},
 				]
 			});
@@ -83,7 +83,7 @@
                 showLoaderOnConfirm: true,
                 preConfirm: (id) => {
                     var id = $(this).data('id');
-                    return axios.delete(route('user.delete', id))
+                    return axios.delete(route('store.delete', id))
                     .then(res => {
                         return res.data;
                     })
