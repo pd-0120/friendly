@@ -20,7 +20,7 @@
         <div class="card">
             <div class="card-header bg-primary">Edit Store</div>
             <div class="card-body">
-                @livewire('store-component')
+                @livewire('store-component', ['store' => $store])
             </div>
         </div>
     </div><!-- /.container-fluid -->

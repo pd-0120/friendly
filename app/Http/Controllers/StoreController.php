@@ -50,11 +50,21 @@ class StoreController extends Controller
      */
     public function destroy(Store $store)
     {
-        $store->delete();
+        try {
+            $store->delete();
+            sleep(1);
 
-        Session::flash('message.level', 'success');
-        Session::flash('message.content', 'Store has been removed successfully.');
-
-        return redirect()->route('store.index');
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Store deleted successfully',
+                'data' => []
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $th->getMessage(),
+                'data' => []
+            ], 200);
+        }
     }
 }

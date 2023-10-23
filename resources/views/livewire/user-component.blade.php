@@ -59,7 +59,7 @@
             </div>
             <div class="col-md-4 form-group">
                 <label for="">Stores</label>
-                <select class="form-control" wire:model='store' multiple>
+                <select class="form-control select2bs4" wire:model='store' multiple>
                     <option value="">Select</option>
                     @forelse ($stores as $store)
                     <option value="{{ $store->id }}">{{ $store->name }}</option>
@@ -96,6 +96,9 @@
 @push('js')
 <script>
     $(function() {
+        $('.select2bs4').select2({
+            theme: 'bootstrap4'
+        })
         const element = document.getElementById('phone_number');
         const maskOptions = {
             mask: '{\\0}0000 000 000'

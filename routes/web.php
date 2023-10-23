@@ -43,7 +43,9 @@ Route::middleware('auth')->group(function () {
     Route::prefix('stores')->name('store.')->group(function () {
         Route::get('/', [StoreController::class, 'index'])->name('index');
         Route::get('create', [StoreController::class, 'create'])->name('create');
-        Route::get('{user}/edit', [StoreController::class, 'edit'])->name('edit');
+        Route::get('{store}/edit', [StoreController::class, 'edit'])->name('edit');
+        Route::delete('{store}/destroy', [StoreController::class, 'destroy'])->name('delete');
+
     });
 });
 

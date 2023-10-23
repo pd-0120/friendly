@@ -4,12 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Jenssegers\Agent\Agent;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
     public function index(Request $request) {
+        $agent = new Agent();
+        // dd($agent->platform());
+        // dd($agent->browser());
+        // dd($agent->deviceType());
+
         if($request->ajax()) {
             $users = User::query()->with('UserDetail');
 
