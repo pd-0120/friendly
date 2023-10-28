@@ -11,15 +11,18 @@ use Illuminate\Support\Facades\DB;
 class UserController extends Controller
 {
     public function index(Request $request) {
-        $agent = new Agent();
+        // $agent = new Agent();
         // dd($agent->platform());
         // dd($agent->browser());
         // dd($agent->deviceType());
 
         if($request->ajax()) {
-            $users = User::query()->with('UserDetail');
+            $users = User::query()->with('UserDetail', 'Stores');
 
             return DataTables::of($users)
+            ->addColumn('stores', function($data) {
+                return implode(', ', $data->Stores->pluck('name')->toArray());
+            })
             ->editColumn('action', function($data) {
                 return view('formActions.user-actions', compact('data'))->render();
             })

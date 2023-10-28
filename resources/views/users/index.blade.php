@@ -67,7 +67,7 @@
 				columns:[
 					{data:'name' , name:'name'},
 					{data:'user_detail.phone' , name:'name'},
-					{data:'email' , name:'email'},
+					{data:'stores' , name:'stores', orderable: false, searchable:false },
 					{data:'action' , name:'action', orderable: false, searchable:false},
 				]
 			});

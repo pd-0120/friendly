@@ -55,18 +55,17 @@
                     @empty
                     @endforelse
                 </select>
-                <x-error-component :name="'detail_state.payrate'" />
+                <x-error-component :name="'role'" />
             </div>
-            <div class="col-md-4 form-group">
+            <div class="col-md-4 form-group" wire:ignore>
                 <label for="">Stores</label>
-                <select class="form-control select2bs4" wire:model='store' multiple>
-                    <option value="">Select</option>
+                <select class="form-control select2bs4" wire:model='store' multiple id="store">
                     @forelse ($stores as $store)
                     <option value="{{ $store->id }}">{{ $store->name }}</option>
                     @empty
                     @endforelse
                 </select>
-                <x-error-component :name="'detail_state.payrate'" />
+                <x-error-component :name="'store'" />
             </div>
             <div class="col-md-4 form-group">
                 <label for="">Joining Date</label>
@@ -108,6 +107,17 @@
         const element1 = document.getElementById('emergency_phone');
 
         const mask1 = window.IMask(element1, maskOptions);
+
+
+        $('#store').change(function(){
+            @this.set('store', $(this).val())
+            console.log()
+        })
+    })
+	document.addEventListener('livewire:initialized', function() {
+        if(@this.get('store')) {
+            $('#store').val(@this.get('store')).trigger('change');
+        }
     })
 </script>
 @endpush

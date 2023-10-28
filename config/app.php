@@ -58,6 +58,7 @@ return [
     'url' => env('APP_URL', 'http://localhost'),
 
     'asset_url' => env('ASSET_URL'),
+    'enable_ip_based_clocking' => env('APP_IP_BASED_LOGIN', false),
 
     /*
     |--------------------------------------------------------------------------

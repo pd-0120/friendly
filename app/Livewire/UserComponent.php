@@ -8,6 +8,7 @@ use App\Models\Store;
 use App\Models\User;
 use App\Models\UserDetails;
 use App\Models\UserStores;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
@@ -63,6 +64,7 @@ class UserComponent extends Component
     public function mount()
     {
         $this->roles = RoleType::getAllProperties();
+        $this->userStores  = collect([]);
 
         if(isset($this->user)) {
             $user = $this->user;
@@ -90,34 +92,35 @@ class UserComponent extends Component
     }
 
     public function saveData() {
-
         $this->validate();
         try {
-            if (!isset($this->user)) {
-                $user = new User();
-                $password = str()->random(8);
+            DB::transaction(function () {
+                if (!isset($this->user)) {
+                    $user = new User();
+                    $password = str()->random(8);
 
-                $user->password = Hash::make($password);
-                Session::flash('message.content', 'User added successfully.');
-            } else {
-                $user = $this->user;
-                Session::flash('message.content', 'User updated successfully.');
-            }
-            $user->name = $this->name;
-            $user->email = $this->email;
-            $user->save();
+                    $user->password = Hash::make($password);
+                    Session::flash('message.content', 'User added successfully.');
+                } else {
+                    $user = $this->user;
+                    Session::flash('message.content', 'User updated successfully.');
+                }
+                $user->name = $this->name;
+                $user->email = $this->email;
+                $user->save();
 
-            $user->syncRoles([$this->role]);
+                $user->syncRoles([$this->role]);
 
-            $this->syncStore($user);
-            $this->updateUserDetail($user);
+                $this->syncStore($user);
+                $this->updateUserDetail($user);
 
-            // Send the welcome email with the password.
-            if($user->wasRecentlyCreated) {
-                $this->sendWelcomeEmail($user, $password);
-            }
+                // Send the welcome email with the password.
+                if($user->wasRecentlyCreated) {
+                    $this->sendWelcomeEmail($user, $password);
+                }
 
-            Session::flash('message.level', 'success');
+                Session::flash('message.level', 'success');
+            });
 
 
         } catch (\Throwable $th) {
@@ -150,7 +153,7 @@ class UserComponent extends Component
     }
 
     private function syncStore($user) {
-        $stores = $this->userStores->pluck('id');
+        $stores = count($this->userStores) > 0 ? $this->userStores->pluck('id') : collect([]);
         $selectedStores = collect($this->store);
 
         $oldStores = ($stores)->diff($selectedStores)->all();
