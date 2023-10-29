@@ -14,7 +14,7 @@ class Clocking extends Component
     public ModelsClocking $clock;
 
     public $clockInTime;
-    public $inTime;
+    public $inTime = "00:00:00";
 
     public function mount()
     {
@@ -24,10 +24,7 @@ class Clocking extends Component
             $this->isClockedIn = true;
             $this->clockInTime = $clock->in_time;
 
-            $hour = Carbon::now()->diff($this->clockInTime)->h;
-            $minutes = Carbon::now()->diff($this->clockInTime)->i;
-            $second = Carbon::now()->diff($this->clockInTime)->s;
-            $this->inTime = "$hour:$minutes:$second";
+            $this->inTime = Carbon::now()->diff($this->clockInTime)->format("%H:%I:%S");
         }
     }
 
@@ -48,6 +45,7 @@ class Clocking extends Component
         $clocking = ModelsClocking::create($data);
         if($clocking) {
             $this->isClockedIn = true;
+            $this->clock = $clocking;
         }
     }
 
@@ -56,6 +54,7 @@ class Clocking extends Component
             $markedClockOut = $this->clock->markClockOut();
             if($markedClockOut) {
                 $this->isClockedIn = false;
+                $this->inTime = "00:00:00";
             }
         });
     }
