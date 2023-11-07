@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ClockingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\UserController;
@@ -30,7 +31,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // User routes
-
     Route::prefix('users')->name('user.')->group(function () {
         Route::get('/',[UserController::class, 'index'])->name('index');
         Route::get('create',[UserController::class, 'create'])->name('create');
@@ -38,14 +38,20 @@ Route::middleware('auth')->group(function () {
         Route::delete('{user}/destroy', [UserController::class, 'destroy'])->name('delete');
     });
 
-    Route::resource('test', StoreController::class);
-
+    // Store routes
     Route::prefix('stores')->name('store.')->group(function () {
         Route::get('/', [StoreController::class, 'index'])->name('index');
         Route::get('create', [StoreController::class, 'create'])->name('create');
         Route::get('{store}/edit', [StoreController::class, 'edit'])->name('edit');
         Route::delete('{store}/destroy', [StoreController::class, 'destroy'])->name('delete');
+    });
 
+    // Clocking routes
+    Route::prefix('clockings')->name('clocking.')->group(function () {
+        Route::get('/', [ClockingController::class, 'index'])->name('index');
+        Route::get('create', [ClockingController::class, 'create'])->name('create');
+        Route::get('{clocking}/edit', [ClockingController::class, 'edit'])->name('edit');
+        Route::delete('{clocking}/destroy', [ClockingController::class, 'destroy'])->name('delete');
     });
 });
 

@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Scopes\AuthUserScope;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -25,14 +24,6 @@ class Clocking extends Model
         'notes',
     ];
 
-    /**
-     * The "booted" method of the model.
-     */
-    protected static function booted(): void
-    {
-        static::addGlobalScope(new AuthUserScope);
-    }
-
     public function User() {
         return $this->belongsTo(User::class);
     }
@@ -50,12 +41,13 @@ class Clocking extends Model
     }
 
     public function markClockOut() {
-        $diff = Carbon::now()->diff($this->in_time);
+        $diff = Carbon::now()->diffInMinutes($this->in_time);
+        $diff = round($diff / 60,2, PHP_ROUND_HALF_EVEN);
 
         return $this->update([
             'out_time' => now()->format('Y-m-d H:i:s'),
             'out_agent' => get_user_agents(),
-            // 'working_hours' => $diff
+            'working_hours' => $diff
         ]);
     }
 }
