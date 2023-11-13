@@ -5,13 +5,14 @@ namespace App\Livewire;
 use App\Models\Clocking;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 
 class ClockComponent extends Component
 {
     public $users;
     public $state = [];
-    public $clock;
+    public $clocking;
 
     public $rules = [
         "state.user_id"=> "required",
@@ -28,16 +29,24 @@ class ClockComponent extends Component
     public function mount() {
         $this->users = User::select('name', 'id')->get()->pluck('name', 'id');
 
-        if($this->clock) {
-            $this->state = $this->clock->toArray();
+        if($this->clocking) {
+            $this->state = $this->clocking->toArray();
+
+            if($this->clocking->in_time) {
+                $this->setTimeInState('in_time', $this->clocking->in_time);
+            }
+
+            if ($this->clocking->out_time) {
+                $this->setTimeInState('out_time', $this->clocking->out_time);
+            }
         }
     }
 
     public function saveData() {
         $this->validate();
 
-        if ($this->clock) {
-            $clock = $this->clock;
+        if ($this->clocking) {
+            $clock = $this->clocking;
         } else {
             $clock = new Clocking();
             $clock->in_agent = get_user_agents();
@@ -56,16 +65,22 @@ class ClockComponent extends Component
             $diff = $clock->out_time->diffInMinutes($clock->in_time);
             $diff = round($diff / 60, 2, PHP_ROUND_HALF_EVEN);
             $clock->working_hours = $diff;
-
         }
 
         $clock->date        = $this->state['date'];
         $clock->save();
-        dd($clock);
+        Session::flash('message.level', 'success');
+        Session::flash('message.content', 'Clock added successfully.');
+
+        return redirect()->route('clocking.index');
     }
 
     public function render()
     {
         return view('livewire.clock-component');
+    }
+
+    private function setTimeInState($type, $time) {
+        $this->state[$type] = Carbon::parse($time)->toTimeString();
     }
 }

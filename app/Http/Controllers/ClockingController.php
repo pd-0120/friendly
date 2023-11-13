@@ -45,9 +45,9 @@ class ClockingController extends Controller
 
     }
 
-    public function edit()
+    public function edit(Clocking $clocking)
     {
-        return view("clockings.edit");
+        return view("clockings.edit", compact('clocking'));
     }
 
     public function destroy(Clocking $clocking)
