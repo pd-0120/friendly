@@ -11,6 +11,7 @@ use Livewire\Component;
 class Clocking extends Component
 {
     public $isClockedIn = false;
+    public $clockedDateTime;
     public ModelsClocking $clock;
 
     public $clockInTime;
@@ -18,6 +19,7 @@ class Clocking extends Component
 
     public function mount()
     {
+
         $clock = ModelsClocking::authUser()->activeClockIn()->first();
         if($clock) {
             $this->clock = $clock;
@@ -25,6 +27,7 @@ class Clocking extends Component
             $this->clockInTime = $clock->in_time;
 
             $this->inTime = Carbon::now()->diff($this->clockInTime)->format("%H:%I:%S");
+            $this->clockedDateTime = Carbon::createFromFormat('H:i:s', $this->inTime);
         }
     }
 
@@ -46,7 +49,9 @@ class Clocking extends Component
         if($clocking) {
             $this->isClockedIn = true;
             $this->clock = $clocking;
+            $this->dispatch('clocking-done')->self();
         }
+
     }
 
     public function clockOut() {
@@ -55,6 +60,7 @@ class Clocking extends Component
             if($markedClockOut) {
                 $this->isClockedIn = false;
                 $this->inTime = "00:00:00";
+                $this->dispatch('clocking-done')->self();
             }
         });
     }
