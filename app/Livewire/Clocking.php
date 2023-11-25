@@ -17,9 +17,9 @@ class Clocking extends Component
     public $clockInTime;
     public $inTime = "00:00:00";
 
+    public $intervalId = 0;
     public function mount()
     {
-
         $clock = ModelsClocking::authUser()->activeClockIn()->first();
         if($clock) {
             $this->clock = $clock;
@@ -49,7 +49,8 @@ class Clocking extends Component
         if($clocking) {
             $this->isClockedIn = true;
             $this->clock = $clocking;
-            $this->dispatch('clocking-done')->self();
+            $this->clockedDateTime = Carbon::now()->startOfDay();
+            $this->dispatch('clocking-in')->self();
         }
 
     }

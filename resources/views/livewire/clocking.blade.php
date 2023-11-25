@@ -12,22 +12,39 @@
             updateTime()
         }
 
+        @this.on('clocking-in', (event) => {
+            updateTime()
+        });
+
+        @this.on('clocking-done', (event) => {
+            clearInterval(@this.intervalId)
+        });
+
         function updateTime() {
             let date = new Date(@this.clockedDateTime)
-            setInterval(() => {
-            date.setSeconds(date.getSeconds()+1);
+            let intervalId = setInterval(() => {
 
-            let hours = date.getHours();
-            let minutes = date.getMinutes();
-            let seconds = date.getSeconds();
+                date.setSeconds(date.getSeconds()+1);
 
-            if(hours < 10) { hours=`0${hours}` }
-            if(minutes < 10) { minutes=`0${minutes}` }
-            if(seconds < 10) { seconds=`0${seconds}` }
-            let foramtedTime=hours+":"+minutes+":"+seconds;
-            $('#clock-time').text(foramtedTime) }, 1000);
+                let hours = date.getHours();
+                let minutes = date.getMinutes();
+                let seconds = date.getSeconds();
+
+                if(hours < 10) { hours=`0${hours}` }
+                if(minutes < 10) { minutes=`0${minutes}` }
+                if(seconds < 10) { seconds=`0${seconds}` }
+
+                let foramtedTime = hours+":"+minutes+":"+seconds;
+
+                $('#clock-time').text(foramtedTime)
+            }, 1000);
+
+            if(intervalId != 0) {
+                @this.set('intervalId', intervalId);
+            }
         }
     });
+
 </script>
 @push('js')
 @endpush
