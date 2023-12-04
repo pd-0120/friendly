@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\RoleType;
 use App\Models\Clocking;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
@@ -14,11 +15,15 @@ class ClockingController extends Controller
     public function index(Request $request) {
         if ($request->ajax()) {
             $users = Clocking::query()->with('User');
+
             if(!auth()->user()->hasRole([RoleType::SuperAdmin])){
                 $users  = $users->authUser();
             }
 
-            return DataTables::of($users)
+            if($request->input('columns.0.search.value')) {
+                $users = $users->where('user_id', $request->input('columns.0.search.value'));
+            }
+            return DataTables::eloquent($users)
                 ->addColumn('in_time', function ($data) {
                     return Carbon::parse($data->in_time)->format('H:i:s');
                 })
@@ -28,15 +33,14 @@ class ClockingController extends Controller
                 ->addColumn('user', function ($data) {
                     return $data->User->name;
                 })
-                ->addColumn('date', function ($data) {
-                    return $data->date;
-                })
                 ->editColumn('action', function ($data) {
                     return view('formActions.clock-actions', compact('data'))->render();
                 })
                 ->make(true);
         }
-        return view("clockings.index");
+        $users = User::get();
+
+        return view("clockings.index", compact('users'));
     }
 
     public function create()

@@ -31,6 +31,18 @@
             <div class="card-header bg-primary">Clockings</div>
             <div class="card-body">
                 <div class="row">
+                    <div class="col-md-3 form-group">
+                        <label for="">Users</label>
+                        <select class="form-control select2bs4" id="user">
+                            @forelse ($users as $user)
+                            <option value="{{ $user->id }}">{{ $user->name }}</option>
+                            @empty
+                            @endforelse
+                        </select>
+                        <x-error-component :name="'state.user_id'" />
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col-md-12">
                         <table class="table" id="clocking-table" width="100%">
                             <thead>
@@ -58,6 +70,7 @@
 <script>
     $(function () {
             const datatable = $('#clocking-table').DataTable({
+                order: [[1, 'desc']],
 				processing:true,
 				pageLength: 20,
 				lengthMenu: [
@@ -75,6 +88,12 @@
                     {data:'action' , name:'action'},
 				]
 			});
+            $('#user').change(function() {
+                datatable
+                .columns(0)
+                .search($(this).val())
+                .draw();
+            });
 
             $(document).on('click', '.delete-btn', function() {
                 Swal.fire({
@@ -104,6 +123,9 @@
                     datatable.ajax.reload()
                 }
                 })
+            });
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
             })
         });
 </script>
