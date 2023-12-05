@@ -4,20 +4,11 @@ use App\Http\Controllers\ClockingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserPayController;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
-
 Route::get('/', function () {
+    // Artisan::call('pay:generate');
     return view('welcome');
 });
 
@@ -52,6 +43,14 @@ Route::middleware('auth')->group(function () {
         Route::get('create', [ClockingController::class, 'create'])->name('create');
         Route::get('{clocking}/edit', [ClockingController::class, 'edit'])->name('edit');
         Route::delete('{clocking}/destroy', [ClockingController::class, 'destroy'])->name('delete');
+    });
+
+    // Pay routes
+    Route::prefix('pays')->name('pay.')->group(function () {
+        Route::get('/', [UserPayController::class, 'index'])->name('index');
+        Route::get('create', [UserPayController::class, 'create'])->name('create');
+        Route::get('{pay}/edit', [UserPayController::class, 'edit'])->name('edit');
+        Route::delete('{pay}/destroy', [UserPayController::class, 'destroy'])->name('delete');
     });
 });
 

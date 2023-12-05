@@ -55,6 +55,14 @@
                         </p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ route('pay.index') }}" class="nav-link">
+                        <i class="nav-icon fas fa-dollar-sign"></i>
+                        <p>
+                            Pay Data
+                        </p>
+                    </a>
+                </li>
             </ul>
         </nav>
         <!-- /.sidebar-menu -->
