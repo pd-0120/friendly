@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\UserPay;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class UserPayController extends Controller
 {
@@ -12,6 +13,22 @@ class UserPayController extends Controller
      */
     public function index(Request $request)
     {
+        if ($request->ajax()) {
+            $userPays = UserPay::query()->select('*');
+
+            return DataTables::eloquent($userPays)
+                ->editColumn('user_id', function($data) {
+                    return $data->User->name ?? $data->User->name;
+                })
+                ->addColumn('pay_period', function ($data) {
+                    return $data->PayPeriod();
+                })
+                ->editColumn('action', function ($data) {
+                    return view('formActions.user-pay-actions', compact('data'))->render();
+                })
+                ->make(true);
+        }
+
         return view('pays.index');
     }
 

@@ -35,10 +35,12 @@
                         <table class="table" id="pay-table" width="100%">
                             <thead>
                                 <tr>
-                                    <td>User</td>
+                                    <td>Employee Name</td>
                                     <td>Pay Period</td>
-                                    <td>Stores</td>
-                                    <td>Actions</td>
+                                    <td>Total Hours</td>
+                                    <td>Total Pay</td>
+                                    <td>Is Paid</td>
+                                    <td>Action</td>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -63,12 +65,26 @@
 				],
 				serverSide: true,
 				scrollX: true,
-				ajax: route('user.index'),
+				ajax: route('pay.index'),
 				columns:[
-					{data:'name' , name:'name'},
-					{data:'user_detail.phone' , name:'name'},
-					{data:'stores' , name:'stores', orderable: false, searchable:false },
-					{data:'action' , name:'action', orderable: false, searchable:false},
+                    {
+                        data:'user_id' , name:'user_id'
+                    },
+                    {
+                        data:'pay_period' , name:'pay_period'
+                    },
+                    {
+                        data:'total_working_hours' , name:'total_working_hours'
+                    },
+                    {
+                        data:'net_pay' , name:'net_pay'
+                    },
+                    {
+                        data:'is_paid' , name:'is_paid'
+                    },
+					{
+                        data:'action' , name:'action', orderable: false, searchable:false
+                    },
 				]
 			});
 

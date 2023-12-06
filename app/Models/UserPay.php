@@ -27,4 +27,8 @@ class UserPay extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function PayPeriod() {
+        return "$this->start_date - $this->end_date";
+    }
 }
