@@ -23,9 +23,13 @@ class UserPayController extends Controller
                 ->addColumn('pay_period', function ($data) {
                     return $data->PayPeriod();
                 })
+                ->editColumn('is_paid', function ($data) {
+                    return view('formActions.user-pay-status', compact('data'))->render();
+                })
                 ->editColumn('action', function ($data) {
                     return view('formActions.user-pay-actions', compact('data'))->render();
                 })
+                ->rawColumns(['is_paid', 'action'])
                 ->make(true);
         }
 
@@ -40,12 +44,13 @@ class UserPayController extends Controller
         return view('pays.create');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(UserPay $userPay)
+    public function upatePayStatus($userPay)
     {
-        //
+        $userPayData = UserPay::find($userPay);
+        $userPayData->is_paid = !$userPayData->is_paid;
+        $userPayData->save();
+
+        return $userPayData;
     }
 
     /**

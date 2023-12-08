@@ -117,6 +117,20 @@
                 }
                 })
             })
+
+            $(document).on('click', '.update-pay-status', function() {
+                const id = $(this).data('id');
+                const url = route('pay.update-pay-status', id);
+                axios.post(url).then(result => {
+                    if (result) {
+                        datatable.ajax.reload()
+                    }
+                }).catch(error => {
+                    Swal.fire({
+                        title: "Unknown error occured",
+                    })
+                })
+            });
         });
 </script>
 @endpush
