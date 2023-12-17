@@ -56,9 +56,9 @@ class UserPayController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(UserPay $userPay)
+    public function edit(UserPay $pay)
     {
-        return view('pays.edit');
+        return view('pays.edit', compact('pay'));
     }
     /**
      * Remove the specified resource from storage.

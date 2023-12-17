@@ -1,7 +1,6 @@
 <div>
     <form wire:submit="saveData">
         <div class="row">
-
             <div class="col-md-3 form-group" wire:ignore>
                 <label for="">Users</label>
                 <select class="form-control select2bs4" wire:model='state.user_id' id="user">
