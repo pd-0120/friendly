@@ -20,13 +20,6 @@
 
 <section class="content">
     <div class="container-fluid">
-        <div class="row mb-3">
-            <div class="col-md-12">
-                <a class="btn btn-primary" type="button" href="{{ route('pay.create') }}">
-                    Generate Pay
-                </a>
-            </div>
-        </div>
         <div class="card">
             <div class="card-header bg-primary">User Pay</div>
             <div class="card-body">

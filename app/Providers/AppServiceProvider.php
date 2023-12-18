@@ -3,7 +3,11 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+// The Date facade
+use Illuminate\Support\Facades\Date;
 
+// And the CarbonImmutable class
+use Carbon\CarbonImmutable;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -11,7 +15,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        Date::use(CarbonImmutable::class);
     }
 
     /**

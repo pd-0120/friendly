@@ -48,7 +48,6 @@ Route::middleware('auth')->group(function () {
     // Pay routes
     Route::prefix('pays')->name('pay.')->group(function () {
         Route::get('/', [UserPayController::class, 'index'])->name('index');
-        Route::get('create', [UserPayController::class, 'create'])->name('create');
         Route::get('{pay}/edit', [UserPayController::class, 'edit'])->name('edit');
         Route::delete('{pay}/destroy', [UserPayController::class, 'destroy'])->name('delete');
         Route::post('pay/update/status/{pay}', [UserPayController::class, 'upatePayStatus'])->name('update-pay-status');

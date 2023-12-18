@@ -23,7 +23,6 @@ final class RoleType extends Enum
             RoleType::Manager,
             RoleType::SuperAdmin,
             RoleType::Employee,
-
         ];
     }
 }
