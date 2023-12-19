@@ -16,7 +16,7 @@ class PaySeeder extends Seeder
         $users = User::all();
 
         foreach($users as $user) {
-            foreach(range(1,30) as $data) {
+            foreach(range(1,100) as $data) {
                 $startDate = Carbon::today()->subDays(rand(0, 365))->startOfWeek();
                 $endDate = $startDate->copy()->endOfWeek();
 
@@ -37,6 +37,31 @@ class PaySeeder extends Seeder
 
                 UserPay::create($payData);
             }
+
+            $userPayDates = $user->UserPays->groupBy('start_date');
+            foreach ($userPayDates as $userPayDate) {
+                if (count($userPayDate) > 1) {
+                    foreach ($userPayDate as $key => $userPay) {
+                        if ($key != 0) {
+                            $userPay->delete();
+                        }
+                    }
+                }
+            }
         }
+
+        // Remove duplicate week en
+        // $users = UserPay::all()->groupBy(['user_id', 'start_date']);
+        // foreach($users as $user) {
+        //     foreach($user as $userPayDates) {
+        //         if (count($userPayDates) > 1) {
+        //             foreach ($userPayDates as $key => $userPayDate) {
+        //                 if ($key != 0) {
+        //                     $userPayDate->delete();
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
     }
 }

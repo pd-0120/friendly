@@ -25,9 +25,23 @@
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
-            <!-- Small boxes (Stat box) -->
-
-            <!-- /.row (main row) -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header"><h4>Pay Per Week</h4></div>
+                        <div class="card-body">
+                            @livewire('charts.pay-chart')
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            {{-- @livewire('charts.pay-chart') --}}
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
