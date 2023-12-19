@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -30,5 +31,15 @@ class UserPay extends Model
 
     public function PayPeriod() {
         return "$this->start_date - $this->end_date";
+    }
+
+    public function scopePaid(Builder $query): void
+    {
+        $query->where('is_paid', 1);
+    }
+
+    public function scopeUnPaid(Builder $query): void
+    {
+        $query->where('is_paid', 0);
     }
 }

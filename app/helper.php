@@ -12,3 +12,21 @@ if(!function_exists('get_user_agents')) {
         return "$platform $browser $deviceType";
     }
 }
+
+if(!function_exists('weeksBetweenTwoDates')) {
+    function weeksBetweenTwoDates($start, $end)
+    {
+        $weeks = [];
+
+        while ($start->weekOfYear !== $end->weekOfYear) {
+            $weeks[] = [
+                'from' => $start->startOfWeek()->format('Y-m-d'),
+                'to' => $start->endOfWeek()->format('Y-m-d')
+            ];
+
+            $start->addWeek(1);
+        }
+
+        return $weeks;
+    }
+}
