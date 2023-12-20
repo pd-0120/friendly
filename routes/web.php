@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ClockingController;
+use App\Http\Controllers\Dashboard\ChartController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\UserController;
@@ -51,6 +52,10 @@ Route::middleware('auth')->group(function () {
         Route::get('{pay}/edit', [UserPayController::class, 'edit'])->name('edit');
         Route::delete('{pay}/destroy', [UserPayController::class, 'destroy'])->name('delete');
         Route::post('pay/update/status/{pay}', [UserPayController::class, 'upatePayStatus'])->name('update-pay-status');
+    });
+
+    Route::prefix('api/chart')->name('chart.')->group(function () {
+        Route::get('/user-pay-bar-chart', [ChartController::class, 'userPayBarChart'])->name('user-pay-bar-chart');
     });
 });
 
