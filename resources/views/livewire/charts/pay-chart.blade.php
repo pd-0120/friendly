@@ -8,6 +8,15 @@
                 @endforeach
             </select>
         </div>
+        <div class="col-md-3 form-group">
+            <label for="">Employee wise Filter</label>
+            <select name='employeeFilter' class="form-control" onchange="filterData()" id="employeeFilter">
+                    <option value="">Select</option>
+                @foreach ($users as $key => $user)
+                    <option value="{{ $user['id'] }}">{{ $user['name'] }}</option>
+                @endforeach
+            </select>
+        </div>
         <div class="col-md-12"><div id="chart"></div></div>
     </div>
 </div>
@@ -54,13 +63,14 @@
             function filterData() {
                 let options = {};
                 options.dateFilter = $('#dateFilter').val();
+                options.employeeFilter = $('#employeeFilter').val();
 
 
                 var url = route('chart.user-pay-bar-chart',options );
-                console.log(url)
+
                 axios({
-                method: 'GET',
-                url: url,
+                    method: 'GET',
+                    url: url,
                 }).then(function(response) {
                     let series = [
                         {

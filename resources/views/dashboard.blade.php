@@ -34,13 +34,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="card">
-                        <div class="card-body">
-                            {{-- @livewire('charts.pay-chart') --}}
-                        </div>
-                    </div>
-                </div>
             </div>
         </div><!-- /.container-fluid -->
     </section>

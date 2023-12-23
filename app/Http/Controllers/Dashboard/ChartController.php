@@ -15,6 +15,7 @@ class ChartController extends Controller
     public $fromDate;
     public $toDate;
     public $dateFilter;
+    public $employeeFilter;
     public function userPayBarChart(Request $request)
     {
         // Get data for weeks of the month
@@ -22,6 +23,10 @@ class ChartController extends Controller
         $this->toDate = $this->fromDate->copy()->endOfMonth();
 
         $this->dateFilter = $request->dateFilter;
+
+        if($request->employeeFilter) {
+            $this->employeeFilter = $request->employeeFilter;
+        }
 
         switch (str($this->dateFilter)->toInteger()) {
             case 0:
@@ -57,11 +62,17 @@ class ChartController extends Controller
     public function getUserPayInstace($week): \Illuminate\Database\Eloquent\Builder
     {
         if(isset($week['isDateBetween'])) {
-            return UserPay::whereDate('start_date', ">=", date($week['from']))
+            $instance = UserPay::whereDate('start_date', ">=", date($week['from']))
             ->whereDate('start_date', "<=", date($week['to']));
         } else {
-            return UserPay::whereStartDate($week['from']);
+            $instance = UserPay::whereStartDate($week['from']);
         }
+
+        if($this->employeeFilter) {
+            $instance = $instance->whereUserId($this->employeeFilter);
+        }
+
+        return $instance;
     }
 
     public function thisMonth()

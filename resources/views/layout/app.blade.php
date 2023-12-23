@@ -34,6 +34,9 @@
     <link rel="stylesheet" href="{{ asset('plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/select2/css/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('plugins/webcam.min.js') }}"> --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.25/webcam.min.js"></script>
+    @vite(['resources/js/app.js'])
     @routes
 </head>
 
@@ -61,6 +64,7 @@
         </aside>
         <!-- /.control-sidebar -->
     </div>
+    @stack('camModal')
     <!-- ./wrapper -->
 
     <!-- jQuery -->
@@ -78,8 +82,8 @@
     <!-- Sparkline -->
     <script src="{{ asset('plugins/sparklines/sparkline.js' ) }}"></script>
     <!-- JQVMap -->
-    <script src="{{ asset('plugins/jqvmap/jquery.vmap.min.js' ) }}></script>
-    <script src=" {{ asset('plugins/jqvmap/maps/jquery.vmap.usa.js' ) }}></script>
+    <script src="{{ asset('plugins/jqvmap/jquery.vmap.min.js' ) }}"></script>
+    <script src=" {{ asset('plugins/jqvmap/maps/jquery.vmap.usa.js' ) }}"></script>
     <!-- jQuery Knob Chart -->
     <script src="{{ asset('plugins/jquery-knob/jquery.knob.min.js' ) }}"></script>
 
@@ -109,7 +113,6 @@
             @endif
         @endif
         </script>
-        @vite(['resources/js/app.js'])
     @stack('js')
 
 </body>
