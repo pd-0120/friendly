@@ -22,6 +22,8 @@ class Clocking extends Model
         'in_agent',
         'out_agent',
         'notes',
+        'clock_in_image',
+        'clock_out_image',
     ];
 
     public function User() {
