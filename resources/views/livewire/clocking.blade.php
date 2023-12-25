@@ -98,13 +98,15 @@
                 axios.put(url, {
                     image : image_content
                 }).then((response) => {
-                    console.log("🚀 ~ file: clocking.blade.php:101 ~ Webcam.snap ~ response:", response)
+                    if(response.data.success) {
+                        @this.dispatch('image-saved', { refreshPosts: response.data.path });
+                    } else {
+                        alert("Something went wrong")
+                    }
                 });
-
-                // Webcam.reset();
-                // $('#webcamModel').modal('hide');
+                Webcam.reset();
+                $('#webcamModel').modal('hide');
 			} );
-
         })
     });
 

@@ -7,6 +7,8 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
+use Livewire\Attributes\On;
+
 
 class Clocking extends Component
 {
@@ -16,6 +18,7 @@ class Clocking extends Component
 
     public $clockInTime;
     public $inTime = "00:00:00";
+    public $clockingImage = "";
 
     public $intervalId = 0;
     public function mount()
@@ -36,6 +39,16 @@ class Clocking extends Component
         return view('livewire.clocking');
     }
 
+    #[On('image-saved')]
+    public function saveClocking($refreshPosts) {
+        if($refreshPosts) {
+            $this->clockingImage = $refreshPosts;
+
+            $this->isClockedIn ? $this->clockOut() : $this->clockIn();
+        }
+        return "";
+    }
+
     public function clockIn() {
         $user = Auth::user();
         $data = [
@@ -43,6 +56,7 @@ class Clocking extends Component
             'date' => now()->format('Y-m-d'),
             'in_time' => now()->format('Y-m-d H:i:s'),
             'in_agent' => get_user_agents(),
+            'clock_in_image' => $this->clockingImage,
         ];
 
         $clocking = ModelsClocking::create($data);
@@ -52,17 +66,29 @@ class Clocking extends Component
             $this->clockedDateTime = Carbon::now()->startOfDay();
             $this->dispatch('clocking-in')->self();
         }
-
+        $this->clockingImage = "";
     }
 
     public function clockOut() {
+
         DB::transaction(function() {
-            $markedClockOut = $this->clock->markClockOut();
+            $diff = Carbon::now()->diffInMinutes($this->clock->in_time);
+            $diff = round($diff / 60, 2, PHP_ROUND_HALF_EVEN);
+
+            $markedClockOut = $this->clock->update([
+                'out_time' => now()->format('Y-m-d H:i:s'),
+                'out_agent' => get_user_agents(),
+                'working_hours' => $diff,
+                'clock_out_image' => $this->clockingImage,
+            ]);
+
             if($markedClockOut) {
                 $this->isClockedIn = false;
                 $this->inTime = "00:00:00";
                 $this->dispatch('clocking-done')->self();
             }
+
+            $this->clockingImage = "";
         });
     }
 }

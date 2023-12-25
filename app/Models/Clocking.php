@@ -41,15 +41,4 @@ class Clocking extends Model
     public function scopeAuthUser(Builder $query): void {
         $query->where('user_id', auth()->user()->id);
     }
-
-    public function markClockOut() {
-        $diff = Carbon::now()->diffInMinutes($this->in_time);
-        $diff = round($diff / 60,2, PHP_ROUND_HALF_EVEN);
-
-        return $this->update([
-            'out_time' => now()->format('Y-m-d H:i:s'),
-            'out_agent' => get_user_agents(),
-            'working_hours' => $diff
-        ]);
-    }
 }
