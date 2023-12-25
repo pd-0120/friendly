@@ -92,11 +92,19 @@
 
         $(document).on('click', '#save-data', function() {
             Webcam.snap( function(data_uri) {
-				console.log(data_uri)
+                const image_content = data_uri
+                const url = route('clocking.saveImageData');
+
+                axios.put(url, {
+                    image : image_content
+                }).then((response) => {
+                    console.log("🚀 ~ file: clocking.blade.php:101 ~ Webcam.snap ~ response:", response)
+                });
+
+                // Webcam.reset();
+                // $('#webcamModel').modal('hide');
 			} );
 
-            // Webcam.reset();
-            // $('#webcamModel').modal('hide');
         })
     });
 

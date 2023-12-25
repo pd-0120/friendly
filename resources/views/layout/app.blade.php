@@ -35,7 +35,7 @@
     <link rel="stylesheet" href="{{ asset('plugins/select2/css/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
     {{-- <link rel="stylesheet" href="{{ asset('plugins/webcam.min.js') }}"> --}}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.25/webcam.min.js"></script>
+    <script src="{{ asset('plugins/webcam.js') }}"></script>
     @vite(['resources/js/app.js'])
     @routes
 </head>

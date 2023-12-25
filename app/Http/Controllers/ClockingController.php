@@ -7,8 +7,12 @@ use App\Models\Clocking;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Ramsey\Uuid\Uuid;
 use Yajra\DataTables\Facades\DataTables;
-
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Auth;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Imagick\Driver;
 
 class ClockingController extends Controller
 {
@@ -70,6 +74,34 @@ class ClockingController extends Controller
                 'status' => 'error',
                 'message' => $th->getMessage(),
                 'data' => []
+            ], 200);
+        }
+    }
+
+    public function saveImageData(Request $request) {
+        $data = explode(',', $request->image);
+        $imageData = base64_decode($data[1]);
+
+        $userId = Auth::user()->id;
+
+        $path = "assets/images/clocking/$userId/";
+
+        if(!File::isDirectory($path)) {
+            File::makeDirectory($path, 0777, true, true);
+        }
+        $fileName = Uuid::uuid4().".png";
+        $path = $path.$fileName;
+
+        $dataSize = file_put_contents($path, $imageData);
+
+        if($dataSize > 0 ) {
+            return response()->json([
+                'success' => true,
+                'path' => $path
+            ], 200);
+        } else {
+            return response()->json([
+                'success' => false,
             ], 200);
         }
     }
