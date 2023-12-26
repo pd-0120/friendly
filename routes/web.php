@@ -3,13 +3,13 @@
 use App\Http\Controllers\ClockingController;
 use App\Http\Controllers\Dashboard\ChartController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserPayController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    // Artisan::call('pay:generate');
     return view('welcome');
 });
 
@@ -18,6 +18,11 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+
+    Route::prefix('roles')->name('role.')->group(function() {
+
+    });
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -53,6 +58,15 @@ Route::middleware('auth')->group(function () {
         Route::get('{pay}/edit', [UserPayController::class, 'edit'])->name('edit');
         Route::delete('{pay}/destroy', [UserPayController::class, 'destroy'])->name('delete');
         Route::post('pay/update/status/{pay}', [UserPayController::class, 'upatePayStatus'])->name('update-pay-status');
+    });
+
+    // Roles routes
+    Route::prefix('role')->name('role.')->group(function () {
+        Route::get('/', [RoleController::class, 'index'])->name('index');
+        Route::get('/create', [RoleController::class, 'create'])->name('create');
+        Route::get('{role}/edit', [RoleController::class, 'edit'])->name('edit');
+        Route::delete('{role}/destroy', [RoleController::class, 'destroy'])->name('delete');
+        Route::get('{role}/assign-permissions', [RoleController::class, 'assignPermissions'])->name('assignPermissions');
     });
 
     Route::prefix('api/chart')->name('chart.')->group(function () {
