@@ -20,6 +20,7 @@
 
 <section class="content">
     <div class="container-fluid">
+        @if($authUser->can('add_role'))
         <div class="row mb-3">
             <div class="col-md-12">
                 <a href="{{ route('role.create') }}" class="btn btn-primary" type="button">
@@ -27,6 +28,7 @@
                 </a>
             </div>
         </div>
+        @endif
         <div class="card">
             <div class="card-header bg-primary">Roles</div>
             <div class="card-body">

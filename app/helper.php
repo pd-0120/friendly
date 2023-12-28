@@ -70,3 +70,10 @@ if (!function_exists('monthsBetweenTwoDates')) {
         return $month;
     }
 }
+
+if(!function_exists('getAuthUser'))
+{
+    function getAuthUser() {
+        return auth()->user();
+    }
+}

@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 // The Date facade
 use Illuminate\Support\Facades\Date;
+use Auth;
 
 // And the CarbonImmutable class
 use Carbon\CarbonImmutable;
@@ -23,6 +24,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        view()->composer('*', function ($view) {
+            if (Auth::check()) {
+                $view->with('authUser', getAuthUser());
+            } else {
+                $view->with('authUser', null);
+            }
+        });
     }
 }

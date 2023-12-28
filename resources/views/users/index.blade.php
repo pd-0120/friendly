@@ -20,6 +20,7 @@
 
 <section class="content">
     <div class="container-fluid">
+        @if($authUser->can('add_user'))
         <div class="row mb-3">
             <div class="col-md-12">
                 <a class="btn btn-primary" type="button" href="{{ route('user.create') }}">
@@ -27,6 +28,7 @@
                 </a>
             </div>
         </div>
+        @endif
         <div class="card">
             <div class="card-header bg-primary">Users</div>
             <div class="card-body">
