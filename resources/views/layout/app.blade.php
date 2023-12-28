@@ -103,6 +103,7 @@
     <script src="{{ asset('plugins/sweetalert2/sweetalert2.min.js') }}"></script>
     <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
     <script>
+
         @if(session()->has('message'))
             @if(session()->get('message.level') == "success")
             toastr.success("{{ session()->get('message.content') }}")

@@ -13,7 +13,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call(RoleSeeder::class);
-        $this->callOnce(UserSeeder::class);
+        $this->call([
+            PermissionSeeder::class,
+            RoleSeeder::class,
+            UserSeeder::class,
+        ]);
+
+        if(env('APP_ENV') != "production") {
+            $this->call([
+                StoreSeeder::class,
+                PaySeeder::class,
+            ]);
+        }
     }
 }

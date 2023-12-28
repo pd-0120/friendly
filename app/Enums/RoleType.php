@@ -19,9 +19,9 @@ final class RoleType extends Enum
 
     public static function getAllProperties() {
         return [
+            RoleType::SuperAdmin,
             RoleType::Admin,
             RoleType::Manager,
-            RoleType::SuperAdmin,
             RoleType::Employee,
         ];
     }
