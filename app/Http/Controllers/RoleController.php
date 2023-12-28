@@ -56,4 +56,8 @@ class RoleController extends Controller
             ], 200);
         }
     }
+
+    public function assignPermissions(Role $role) {
+        return view('role.assignPermission', compact('role'));
+    }
 }

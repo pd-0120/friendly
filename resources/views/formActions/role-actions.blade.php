@@ -11,5 +11,11 @@
                 <i class="fa fa-trash"></i>
             </button>
         @endif
-    @endif
+
+        @endif
+        @if($authUser->can('assign_permission'))
+        <a class="btn btn-warning mt-2" href="{{ route('role.assignPermissions', $data->id) }}">
+            <i class="fa fa-eye"></i>
+        </a>
+        @endif
 </div>
