@@ -4,7 +4,7 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use Spatie\Permission\Models\Permission;
-
+use Illuminate\Support\Facades\Session;
 
 class AssingPermissionComponent extends Component
 {
@@ -39,6 +39,15 @@ class AssingPermissionComponent extends Component
         }
     }
     public function saveData() {
-        dd($this);
+        $permissions = collect($this->state)->filter(function($data) {
+            return $data;
+        })
+        ->keys()
+        ->toArray();
+        $this->role->syncPermissions($permissions);
+
+        Session::flash('message.level', 'success');
+        Session::flash('message.content', 'Permissions updates successfully.');
+        return redirect()->route('role.index');
     }
 }
