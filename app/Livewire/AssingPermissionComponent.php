@@ -4,7 +4,6 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use Spatie\Permission\Models\Permission;
-use Livewire\Attributes\Computed;
 
 
 class AssingPermissionComponent extends Component
@@ -12,21 +11,33 @@ class AssingPermissionComponent extends Component
     public $role;
     public $roleHasPermissions = [];
 
-    #[Computed]
-    public function permissions() {
-        return Permission::select('name', 'module', 'description')->get()->groupBy('module');
-    }
+    public $permissions;
+    public $state = [];
     public function mount() {
 
         $this->role->getAllPermissions()->filter(function($data){
             array_push($this->roleHasPermissions, $data->name);
         });
+        $this->permissions = Permission::select('name', 'module', 'description')->get()->groupBy('module')->toArray();
+
+        $this->buildPermissionState();
     }
     public function render()
     {
         return view('livewire.assing-permission-component');
     }
 
+    public function buildPermissionState() {
+        foreach ($this->permissions as $permissionModules) {
+            foreach ($permissionModules as $permission) {
+                if (in_array($permission['name'], $this->roleHasPermissions)) {
+                    $this->state[$permission['name']] = true;
+                } else {
+                    $this->state[$permission['name']] = false;
+                }
+            }
+        }
+    }
     public function saveData() {
 
     }
