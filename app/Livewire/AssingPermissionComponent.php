@@ -39,6 +39,6 @@ class AssingPermissionComponent extends Component
         }
     }
     public function saveData() {
-
+        dd($this);
     }
 }

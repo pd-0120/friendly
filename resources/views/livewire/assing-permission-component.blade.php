@@ -1,26 +1,33 @@
 <div>
-    <table class="table ">
-        <tr>
-            <td>Permission Module</td>
-            <td></td>
-            <td>Permission Name</td>
-            <td>Permission Description</td>
+    <form wire:submit='saveData'>
+        <table class="table table-bordered">
+            <tr>
+            <td align="center">Permission Module</td>
+            <td align="center"></td>
+            <td align="center">Permission Name</td>
+            <td align="center">Permission Description</td>
         </tr>
-        @forelse ($this->permissions as $permissionModule)
-            @forelse ($permissionModule as $permission)
-            <tr class="form-group">
+            @forelse ($this->permissions as $permissionModule)
+                @forelse ($permissionModule as $permission)
+                <tr class="form-group">
                     @if($loop->first)
-                    <td rowspan="{{ $loop->count }}">{{ $permission['module'] }}</td>
+                    <td rowspan="{{ $loop->count }}" align="center">{{ $permission['module'] }}</td>
                     @endif
-                    <td>
+                    <td align="center">
                         <input type="checkbox" class="form-control" wire:model='{{ 'state.'.$permission['name'] }}'>
                     </td>
-                    <td>{{ $permission['name'] }}</td>
-                    <td>{{ $permission['description'] }}</td>
+                    <td align="center">{{ $permission['name'] }}</td>
+                    <td align="center">{{ $permission['description'] }}</td>
                 </tr>
                 @empty
-            @endforelse
+                @endforelse
             @empty
-        @endforelse
-    </table>
+            @endforelse
+        </table>
+        <div class="row">
+            <div class="col-md-3">
+                <button class="btn btn-success">Submit</button>
+            </div>
+        </div>
+    </form>
 </div>
