@@ -47,7 +47,7 @@ class AssingPermissionComponent extends Component
         $this->role->syncPermissions($permissions);
 
         Session::flash('message.level', 'success');
-        Session::flash('message.content', 'Permissions updates successfully.');
+        Session::flash('message.content', 'Permissions updated successfully.');
         return redirect()->route('role.index');
     }
 }
