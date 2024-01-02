@@ -11,8 +11,6 @@ use Ramsey\Uuid\Uuid;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
-use Intervention\Image\ImageManager;
-use Intervention\Image\Drivers\Imagick\Driver;
 
 class ClockingController extends Controller
 {

@@ -74,6 +74,16 @@
                     </a>
                 </li>
                 @endif
+
+                <li class="nav-item">
+                    <a href="{{ route('role.index') }}" class="nav-link">
+                        <i class="nav-icon fas fa-user"></i>
+                        <p>
+                            Cash Recounsilation
+                        </p>
+                    </a>
+                </li>
+
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

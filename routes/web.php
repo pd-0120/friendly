@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CashRecounciliationController;
 use App\Http\Controllers\ClockingController;
 use App\Http\Controllers\Dashboard\ChartController;
 use App\Http\Controllers\ProfileController;
@@ -63,6 +64,16 @@ Route::middleware(['auth', 'access_control'])->group(function () {
         Route::get('{role}/edit', [RoleController::class, 'edit'])->name('edit');
         Route::delete('{role}/destroy', [RoleController::class, 'destroy'])->name('delete');
         Route::get('{role}/assign-permissions', [RoleController::class, 'assignPermissions'])->name('assignPermissions');
+    });
+
+    // Cash management routes
+    Route::prefix('cash-management')->name('cash-management.')->group(function () {
+        Route::prefix('recounciliation')->name('recounciliation.')->group(function() {
+            Route::get('/', [CashRecounciliationController::class, 'index'])->name('index');
+            Route::get('/add', [CashRecounciliationController::class, 'create'])->name('create');
+            Route::get('{cashRecounciliation}/edit', [CashRecounciliationController::class, 'edit'])->name('edit');
+            Route::delete('{cashRecounciliation}/destroy', [CashRecounciliationController::class, 'destroy'])->name('delete');
+        });
     });
 
     Route::prefix('api/chart')->name('chart.')->group(function () {
