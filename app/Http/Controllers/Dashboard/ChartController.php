@@ -96,6 +96,7 @@ class ChartController extends Controller
         $this->toDate = Carbon::now()->subMonth()->endOfMonth();
 
         $weeks = fortNightBetweenTwoDates($this->fromDate, $this->toDate);
+
         $this->setWeekData($weeks);
     }
 

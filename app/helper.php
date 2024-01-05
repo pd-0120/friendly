@@ -35,10 +35,9 @@ if(!function_exists('weeksBetweenTwoDates')) {
 if (!function_exists('fortNightBetweenTwoDates')) {
     function fortNightBetweenTwoDates($start, $end)
     {
-
         $weeks = [];
 
-        while ($start->weekOfYear <= $end->weekOfYear) {
+        while ($start <= $end) {
             $weeks[] = [
                 'from' => $start->startOfWeek()->format('Y-m-d'),
                 'to' => $start->copy()->addWeek(1)->endOfWeek()->format('Y-m-d'),
