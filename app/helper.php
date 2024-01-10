@@ -9,8 +9,9 @@ if(!function_exists('get_user_agents')) {
         $platform   = $agent->platform();
         $browser    = $agent->browser();
         $deviceType = $agent->deviceType();
+        $device = $agent->device();
 
-        return "$platform $browser $deviceType";
+        return "$platform $browser $deviceType $device";
     }
 }
 

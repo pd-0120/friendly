@@ -41,7 +41,6 @@
                             @empty
                             @endforelse
                         </select>
-                        <x-error-component :name="'state.user_id'" />
                     </div>
                 </div>
                 <div class="row">
@@ -52,7 +51,9 @@
                                     <td>User</td>
                                     <td>Date</td>
                                     <td>In Time</td>
+                                    <td>ClockIn Data</td>
                                     <td>Out Time</td>
+                                    <td>ClockOut Data</td>
                                     <td>Total Time</td>
                                     <td>Action</td>
                                 </tr>
@@ -65,7 +66,25 @@
         </div>
     </div><!-- /.container-fluid -->
 </section>
-
+<div class="modal fade" id="clockImageModel" tabindex="-1" role="dialog" aria-labelledby="clockImageModelLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Info</h5>
+                <button type="button" class="close" aria-label="Close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="imageData"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @push('js')
@@ -85,7 +104,9 @@
 					{data:'user' , name:'user'},
 					{data:'date' , name:'date'},
 					{data:'in_time' , name:'in_time'},
+					{data:'in_agent' , name:'in_agent'},
                     {data:'out_time' , name:'out_time'},
+                    {data:'out_agent' , name:'out_agent'},
                     {data:'working_hours' , name:'working_hours'},
                     {data:'action' , name:'action'},
 				]
@@ -124,6 +145,28 @@
                     })
                     datatable.ajax.reload()
                 }
+                })
+            });
+
+            $(document).on('click', '.clocking-data', function() {
+                const clocktype = $(this).data('type');
+                const id = $(this).data('id');
+
+                const url = route('clocking.clockingData', {
+                    type : 'image',
+                    dataType: clocktype,
+                    clocking: id,
+                })
+                return axios.get(url).then((res) => {
+                    if(res.status == 200) {
+                        const resData = res.data
+
+                        if(resData.type == "success") {
+                            $('#imageData').children('img').remove();
+                            $('#imageData').append(resData.image);
+                            $('#clockImageModel').modal('show')
+                        }
+                    }
                 })
             });
             $('.select2bs4').select2({

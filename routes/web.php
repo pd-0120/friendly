@@ -47,6 +47,7 @@ Route::middleware(['auth', 'access_control'])->group(function () {
         Route::get('{clocking}/edit', [ClockingController::class, 'edit'])->name('edit');
         Route::delete('{clocking}/destroy', [ClockingController::class, 'destroy'])->name('delete');
         Route::put('image/save', [ClockingController::class, 'saveImageData'])->name('saveImageData');
+        Route::get('data/{clocking}/images/{type}', [ClockingController::class, 'getClockingData'])->name('clockingData');
     });
 
     // Pay routes

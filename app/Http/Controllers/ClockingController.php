@@ -26,18 +26,29 @@ class ClockingController extends Controller
                 $users = $users->where('user_id', $request->input('columns.0.search.value'));
             }
             return DataTables::eloquent($users)
-                ->addColumn('in_time', function ($data) {
+                ->editColumn('in_time', function ($data) {
                     return Carbon::parse($data->in_time)->format('H:i:s');
                 })
-                ->addColumn('out_time', function ($data) {
+                ->editColumn('in_agent', function ($data) {
+                    return $data->in_agent ?  "<button class=' btn badge bg-primary clocking-data' data-type='in' data-id='$data->id'>$data->in_agent</button>" : "";
+                })
+                ->editColumn('out_time', function ($data) {
                     return $data->out_time ? Carbon::parse($data->out_time)->format('H:i:s') : '00:00:00';
                 })
-                ->addColumn('user', function ($data) {
+                ->editColumn('out_agent', function ($data) {
+                    return $data->out_agent ? "<button class=' btn badge bg-primary clocking-data' data-type='out' data-id='$data->id'>$data->out_agent</button>" : "";
+                })
+                ->editColumn('user', function ($data) {
                     return $data->User->name;
                 })
                 ->editColumn('action', function ($data) {
                     return view('formActions.clock-actions', compact('data'))->render();
                 })
+                ->rawColumns([
+                    'action',
+                    'in_agent',
+                    'out_agent',
+                ])
                 ->make(true);
         }
         $users = User::get();
@@ -102,5 +113,25 @@ class ClockingController extends Controller
                 'success' => false,
             ], 200);
         }
+    }
+
+    public function getClockingData(Request $request, Clocking $clocking, $type)
+    {
+        $data = "";
+        if($type == "image") {
+            $dataType = $request->dataType;
+            if($dataType == "in") {
+                $data = asset($clocking->clock_in_image);
+            } else {
+                $data = asset($clocking->clock_out_image);
+            }
+
+            $data = "<img src='$data' width='100%' height='auto'></img>";
+        }
+
+        return response()->json([
+            'image' => $data,
+            'type' => 'success'
+        ], 200);
     }
 }
